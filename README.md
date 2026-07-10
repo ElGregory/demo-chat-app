@@ -61,10 +61,11 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Design Decisions
 
-Curious about how we decouple the destination API or how conflict detection runs? We documented our logic and assumptions:
+The following documentation outlines the architectural choices, technical logic, and system assumptions:
 
-- **[Architecture & Assumptions](./ASSUMPTIONS.md)** — Explains the separated `DestinationService`, Postgres setup, and deterministic conflict detection.
-- **[Process & Scaling](./PROCESS.md)** — Covers how the project was built and how it scales.
+- **[Architecture & Assumptions](./ASSUMPTIONS.md)** — Detailed overview of the decoupled `DestinationService`, PostgreSQL persistence, and deterministic conflict detection.
+- **[AI Developer Guide](./DEVELOPER-GUIDE.md)** — Comprehensive guide on the "Smart Tools, Dumb Model" paradigm, TanStack AI integration, and tool definitions.
+- **[Process & Scaling](./PROCESS.md)** — Analysis of the development lifecycle and strategies for system scaling.
 
 ---
 
