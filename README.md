@@ -13,7 +13,7 @@ A desktop-first AI travel assistant that builds a durable travel profile through
 
 ---
 
-## Setup (5 steps)
+## Quick Start (Under 5 minutes)
 
 ### 1. Install dependencies
 
@@ -42,12 +42,6 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/profile_builder
 docker-compose up -d postgres
 ```
 
-Verify the database is accessible:
-
-```bash
-./pnpm-db-check
-```
-
 ### 4. Apply migrations and seed destinations
 
 ```bash
@@ -65,14 +59,24 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
+## Design Decisions
+
+Curious about how we decouple the destination API or how conflict detection runs? We documented our logic and assumptions:
+
+- **[Architecture & Assumptions](./ASSUMPTIONS.md)** — Explains the separated `DestinationService`, Postgres setup, and deterministic conflict detection.
+- **[Process & Scaling](./PROCESS.md)** — Covers how the project was built and how it scales.
+
+---
+
 ## What you'll see
 
-| Route           | Description                               |
-| --------------- | ----------------------------------------- |
-| `/`             | Home page with the AI travel chat         |
-| `/destinations` | All seeded destinations from the database |
+| Route           | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| `/`             | Home page with the AI travel chat                            |
+| `/profile`      | Your persistent travel profile and conflict resolution       |
+| `/destinations` | All available destinations from the mock destination service |
 
-Chat with the assistant — it can look up any of the 8 seeded destinations and answer questions about climate, budget, attractions, and more.
+Chat with the assistant — it can look up any of the 8 seeded destinations, answer questions about best seasons to visit, daily costs, local highlights, visa rules, and more, while seamlessly building your persistent travel profile.
 
 ---
 

@@ -1,120 +1,6 @@
 import "dotenv/config"
 import { Client } from "pg"
-
-const destinationData = [
-	{
-		name: "Tokyo",
-		info: {
-			country: "Japan",
-			region: "Kanto",
-			climate: "Temperate",
-			bestTime: "April-May, September-October",
-			attractions: ["Senso-ji Temple", "Tokyo Tower", "Shibuya Crossing", "Meiji Shrine"],
-			cuisine: "Sushi, Ramen, Tempura",
-			budget: "Moderate to High",
-			timezone: "JST (UTC+9)",
-			language: "Japanese",
-		},
-	},
-	{
-		name: "Paris",
-		info: {
-			country: "France",
-			region: "Île-de-France",
-			climate: "Temperate",
-			bestTime: "April-June, September-October",
-			attractions: ["Eiffel Tower", "Louvre Museum", "Notre-Dame", "Arc de Triomphe"],
-			cuisine: "French bistro, Pastries, Cheese",
-			budget: "High",
-			timezone: "CET (UTC+1)",
-			language: "French",
-		},
-	},
-	{
-		name: "Barcelona",
-		info: {
-			country: "Spain",
-			region: "Catalonia",
-			climate: "Mediterranean",
-			bestTime: "May-June, September-October",
-			attractions: ["Sagrada Familia", "Park Güell", "Gothic Quarter", "Las Ramblas"],
-			cuisine: "Tapas, Paella, Seafood",
-			budget: "Moderate",
-			timezone: "CET (UTC+1)",
-			language: "Spanish, Catalan",
-		},
-	},
-	{
-		name: "New York",
-		info: {
-			country: "United States",
-			region: "New York",
-			climate: "Humid Continental",
-			bestTime: "April-May, September-October",
-			attractions: ["Statue of Liberty", "Central Park", "Times Square", "Brooklyn Bridge"],
-			cuisine: "Pizza, Hot dogs, Diverse cuisines",
-			budget: "High",
-			timezone: "EST (UTC-5)",
-			language: "English",
-		},
-	},
-	{
-		name: "Bangkok",
-		info: {
-			country: "Thailand",
-			region: "Central Thailand",
-			climate: "Tropical",
-			bestTime: "November-February",
-			attractions: ["Grand Palace", "Wat Phra Kaew", "Chao Phraya River", "Floating Markets"],
-			cuisine: "Thai curry, Pad Thai, Street food",
-			budget: "Budget-friendly",
-			timezone: "ICT (UTC+7)",
-			language: "Thai",
-		},
-	},
-	{
-		name: "Sydney",
-		info: {
-			country: "Australia",
-			region: "New South Wales",
-			climate: "Temperate",
-			bestTime: "September-November, March-May",
-			attractions: ["Sydney Opera House", "Harbour Bridge", "Bondi Beach", "Blue Mountains"],
-			cuisine: "Seafood, Modern Australian, Coffee",
-			budget: "High",
-			timezone: "AEDT (UTC+11)",
-			language: "English",
-		},
-	},
-	{
-		name: "Bali",
-		info: {
-			country: "Indonesia",
-			region: "Bali",
-			climate: "Tropical",
-			bestTime: "April-October",
-			attractions: ["Ubud Rice Terraces", "Tanah Lot Temple", "Mount Batur", "Seminyak Beach"],
-			cuisine: "Balinese curry, Satay, Nasi Goreng",
-			budget: "Budget-friendly",
-			timezone: "WITA (UTC+8)",
-			language: "Indonesian",
-		},
-	},
-	{
-		name: "Rome",
-		info: {
-			country: "Italy",
-			region: "Lazio",
-			climate: "Mediterranean",
-			bestTime: "April-May, September-October",
-			attractions: ["Colosseum", "Vatican City", "Roman Forum", "Trevi Fountain"],
-			cuisine: "Pasta, Pizza, Gelato",
-			budget: "Moderate",
-			timezone: "CET (UTC+1)",
-			language: "Italian",
-		},
-	},
-]
+import { getDestinationsList } from "../src/lib/services/destinationService"
 
 async function seed() {
 	console.log("Loading environment...")
@@ -148,27 +34,29 @@ async function seed() {
 		await client.connect()
 		console.log("Connected to PostgreSQL at", host + ":" + port + "/" + database)
 
+		const destinationData = await getDestinationsList()
+
 		for (const dest of destinationData) {
 			await client.query(
 				`
 					INSERT INTO destinations (name, info, last_queried)
 					VALUES ($1, $2::jsonb, NOW())
-					ON CONFLICT (name) DO NOTHING
+					ON CONFLICT (name) DO UPDATE SET info = EXCLUDED.info, last_queried = NOW()
 				`,
-				[dest.name, JSON.stringify(dest.info)],
+				[dest.name, JSON.stringify(dest)],
 			)
 			console.log(`  ✓ ${dest.name}`)
 		}
 
 		await client.end()
 		console.log(`\n✓ Seeded ${destinationData.length} destinations`)
-	} catch (err) {
-		console.error("\nERROR:", err.message)
-		if (err.message.includes("password")) {
+	} catch (err: any) {
+		console.error("\nERROR:", err?.message || err)
+		if (err?.message && err.message.includes("password")) {
 			console.error("\nCheck your DATABASE_URL in .env.local")
 			console.error("Format: postgresql://username:password@host:port/database")
 		}
-		if (err.message.includes("connect")) {
+		if (err?.message && err.message.includes("connect")) {
 			console.error("\nIs PostgreSQL running? Start with: docker-compose up -d postgres")
 		}
 		client.end()

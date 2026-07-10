@@ -4,27 +4,35 @@ import { db } from "#/db";
 import {
 	conflicts,
 	conversations,
-	destinations,
 	travelProfile,
 } from "#/db/schema";
 import { createTRPCRouter, publicProcedure } from "./init";
 import { createFallbackProfile, withDatabaseFallback } from "./profile-helpers";
+import { getDestinationsList, getDestinationInfo as getDestInfo } from "#/lib/services/destinationService";
 
 export const trpcRouter = createTRPCRouter({
 	// Destinations
 	destinations: createTRPCRouter({
 		list: publicProcedure.query(async () => {
-			return db.select().from(destinations).orderBy(asc(destinations.name));
+			const list = await getDestinationsList();
+			// Sort alphabetically by name
+			const sorted = [...list].sort((a, b) => a.name.localeCompare(b.name));
+			return sorted.map((dest, i) => ({
+				id: i + 1,
+				name: dest.name,
+				info: dest,
+			}));
 		}),
 		getByName: publicProcedure
 			.input(z.object({ name: z.string() }))
 			.query(async ({ input }) => {
-				const result = await db
-					.select()
-					.from(destinations)
-					.where(eq(destinations.name, input.name))
-					.limit(1);
-				return result[0] ?? null;
+				const dest = await getDestInfo(input.name);
+				if (!dest) return null;
+				return {
+					id: 999,
+					name: dest.name,
+					info: dest,
+				};
 			}),
 	}),
 
