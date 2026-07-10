@@ -1,0 +1,29 @@
+{
+  "projectName": "demo-chat-app",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "pnpm",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {
+    "drizzle": {
+      "database": "postgresql"
+    }
+  },
+  "envVarValues": {},
+  "git": false,
+  "install": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "nitro",
+    "ai",
+    "drizzle",
+    "shadcn",
+    "tRPC",
+    "store",
+    "tanstack-query"
+  ]
+}
