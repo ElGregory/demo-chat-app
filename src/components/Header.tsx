@@ -30,6 +30,13 @@ export default function Header() {
           >
             Destinations
           </Link>
+          <Link
+            to="/profile"
+            className="nav-link"
+            activeProps={{ className: 'nav-link is-active' }}
+          >
+            Profile
+          </Link>
         </div>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
