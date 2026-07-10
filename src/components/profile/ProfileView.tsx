@@ -3,7 +3,7 @@ import {
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Check, Edit2, X } from "lucide-react";
+import { Check, Edit2, X, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useTRPC } from "#/integrations/trpc/react";
 
@@ -170,6 +170,77 @@ function BudgetField({
 	);
 }
 
+function ConflictsSection() {
+	const trpc = useTRPC();
+	const queryClient = useQueryClient();
+	const { data: conflicts } = useSuspenseQuery(trpc.conflicts.list.queryOptions());
+	const resolveMutation = useMutation(trpc.conflicts.resolve.mutationOptions());
+
+	const handleResolve = async (id: number, action: "keep_existing" | "accept_new" | "merge_both") => {
+		await resolveMutation.mutateAsync({ id, action });
+		queryClient.invalidateQueries({ queryKey: trpc.conflicts.list.queryKey() });
+		queryClient.invalidateQueries({ queryKey: trpc.profile.get.queryKey() });
+	};
+
+	if (!conflicts || conflicts.length === 0) {
+		return null;
+	}
+
+	return (
+		<div className="space-y-3 mt-8">
+			<div className="flex items-center gap-2 text-rose-600">
+				<AlertCircle size={18} />
+				<h3 className="font-semibold text-sm uppercase tracking-wider">Pending Conflicts</h3>
+			</div>
+			<div className="space-y-3">
+				{conflicts.map((conflict) => (
+					<div key={conflict.id} className="rounded-xl border border-rose-200 bg-rose-50/50 p-4">
+						<p className="mb-2 text-sm text-rose-900 font-medium">
+							I noticed a contradiction about your <span className="font-bold underline">{conflict.field}</span>:
+						</p>
+						<div className="grid grid-cols-2 gap-3 mb-4">
+							<div className="rounded-lg bg-white p-3 shadow-sm border border-rose-100">
+								<p className="text-xs font-semibold text-rose-700/70 uppercase tracking-wider mb-1">Previous Preference</p>
+								<p className="text-sm font-medium text-[var(--sea-ink)]">
+									{typeof conflict.previousValue === 'object' ? JSON.stringify(conflict.previousValue) : String(conflict.previousValue)}
+								</p>
+							</div>
+							<div className="rounded-lg bg-white p-3 shadow-sm border border-rose-100">
+								<p className="text-xs font-semibold text-rose-700/70 uppercase tracking-wider mb-1">New Information</p>
+								<p className="text-sm font-medium text-[var(--sea-ink)]">
+									{typeof conflict.newValue === 'object' ? JSON.stringify(conflict.newValue) : String(conflict.newValue)}
+								</p>
+							</div>
+						</div>
+						<div className="flex flex-wrap gap-2">
+							<button
+								onClick={() => handleResolve(conflict.id, "keep_existing")}
+								className="flex-1 rounded-lg bg-white px-3 py-2 text-sm font-medium text-rose-700 shadow-sm border border-rose-200 transition hover:bg-rose-50"
+							>
+								Keep Previous
+							</button>
+							<button
+								onClick={() => handleResolve(conflict.id, "accept_new")}
+								className="flex-1 rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-rose-700"
+							>
+								Accept New
+							</button>
+							{typeof conflict.previousValue === 'object' && Array.isArray(conflict.previousValue) && (
+								<button
+									onClick={() => handleResolve(conflict.id, "merge_both")}
+									className="flex-1 rounded-lg bg-[var(--lagoon-deep)] px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-[var(--lagoon-dark)]"
+								>
+									Merge Both
+								</button>
+							)}
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	);
+}
+
 export default function ProfileView() {
 	const trpc = useTRPC();
 	const queryClient = useQueryClient();
@@ -259,6 +330,8 @@ export default function ProfileView() {
 				value={prefs.budget}
 				onSave={(v) => handleUpdate({ budget: v[0] })}
 			/>
+
+			<ConflictsSection />
 		</div>
 	);
 }

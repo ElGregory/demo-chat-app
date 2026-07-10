@@ -45,7 +45,8 @@ async function detectConflict(
 		const removed = existingValue.filter((v) => !newSet.has(v))
 		const added = newValue.filter((v) => !existingSet.has(v))
 
-		if (removed.length === 0 && added.length === 0) return null
+		// If we only added items (no removals), it's not a conflict, just an update.
+		if (removed.length === 0) return null
 
 		return {
 			hasConflict: true,
@@ -108,6 +109,9 @@ export const extractProfile = extractProfileToolDef.server(async (args) => {
 		new: string
 	}> = []
 
+	// Only apply non-conflicting fields immediately
+	const fieldsToUpdate: Record<string, unknown> = {}
+
 	for (const [key, value] of Object.entries(inputData)) {
 		if (value !== undefined) {
 			const conflict = await detectConflict(key, value, existing)
@@ -118,13 +122,15 @@ export const extractProfile = extractProfileToolDef.server(async (args) => {
 					new: conflict.new,
 				})
 				await saveConflict(key, existing[key], value, conversationId)
+			} else {
+				fieldsToUpdate[key] = value
 			}
 		}
 	}
 
 	const newPreferences = {
 		...existing,
-		...inputData,
+		...fieldsToUpdate,
 		updatedAt: new Date().toISOString(),
 	}
 

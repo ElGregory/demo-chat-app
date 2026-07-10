@@ -14,6 +14,7 @@ import { Route as DestinationsRouteImport } from './routes/destinations'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api.trpc.$'
+import { Route as ApiAiTravelChatRouteImport } from './routes/api/ai/travel-chat'
 
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
@@ -40,12 +41,18 @@ const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
   path: '/api/trpc/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAiTravelChatRoute = ApiAiTravelChatRouteImport.update({
+  id: '/api/ai/travel-chat',
+  path: '/api/ai/travel-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/destinations': typeof DestinationsRoute
   '/profile': typeof ProfileRoute
+  '/api/ai/travel-chat': typeof ApiAiTravelChatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/destinations': typeof DestinationsRoute
   '/profile': typeof ProfileRoute
+  '/api/ai/travel-chat': typeof ApiAiTravelChatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,34 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/destinations': typeof DestinationsRoute
   '/profile': typeof ProfileRoute
+  '/api/ai/travel-chat': typeof ApiAiTravelChatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/destinations' | '/profile' | '/api/trpc/$'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/destinations'
+    | '/profile'
+    | '/api/ai/travel-chat'
+    | '/api/trpc/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/destinations' | '/profile' | '/api/trpc/$'
-  id: '__root__' | '/' | '/about' | '/destinations' | '/profile' | '/api/trpc/$'
+  to:
+    | '/'
+    | '/about'
+    | '/destinations'
+    | '/profile'
+    | '/api/ai/travel-chat'
+    | '/api/trpc/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/destinations'
+    | '/profile'
+    | '/api/ai/travel-chat'
+    | '/api/trpc/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +104,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   DestinationsRoute: typeof DestinationsRoute
   ProfileRoute: typeof ProfileRoute
+  ApiAiTravelChatRoute: typeof ApiAiTravelChatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
 
@@ -116,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTrpcSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai/travel-chat': {
+      id: '/api/ai/travel-chat'
+      path: '/api/ai/travel-chat'
+      fullPath: '/api/ai/travel-chat'
+      preLoaderRoute: typeof ApiAiTravelChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -124,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   DestinationsRoute: DestinationsRoute,
   ProfileRoute: ProfileRoute,
+  ApiAiTravelChatRoute: ApiAiTravelChatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }
 export const routeTree = rootRouteImport

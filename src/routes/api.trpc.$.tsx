@@ -18,6 +18,8 @@ function handler({ request }: { request: Request }) {
     headers: request.headers,
     body: request.body,
     redirect: request.redirect,
+    // @ts-ignore
+    duplex: 'half',
   })
 
   return fetchRequestHandler({

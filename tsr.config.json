@@ -1,4 +1,3 @@
 {
-  "target": "react",
-  "routeFileIgnorePattern": "api\\..*\\.ts$"
+  "target": "react"
 }

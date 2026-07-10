@@ -8,6 +8,7 @@ import {
 	travelProfile,
 } from "#/db/schema";
 import { createTRPCRouter, publicProcedure } from "./init";
+import { createFallbackProfile, withDatabaseFallback } from "./profile-helpers";
 
 export const trpcRouter = createTRPCRouter({
 	// Destinations
@@ -53,8 +54,10 @@ export const trpcRouter = createTRPCRouter({
 	// Travel Profile
 	profile: createTRPCRouter({
 		get: publicProcedure.query(async () => {
-			const result = await db.select().from(travelProfile).limit(1);
-			return result[0] ?? null;
+			return withDatabaseFallback(createFallbackProfile(), async () => {
+				const result = await db.select().from(travelProfile).limit(1);
+				return result[0] ?? createFallbackProfile();
+			});
 		}),
 		update: publicProcedure
 			.input(
@@ -68,26 +71,28 @@ export const trpcRouter = createTRPCRouter({
 				}),
 			)
 			.mutation(async ({ input }) => {
-				const existing = await db.select().from(travelProfile).limit(1);
-				const preferences = {
-					...((existing[0]?.preferences as Record<string, unknown>) ?? {}),
-					...input,
-					updatedAt: new Date().toISOString(),
-				};
+				return withDatabaseFallback(createFallbackProfile(), async () => {
+					const existing = await db.select().from(travelProfile).limit(1);
+					const preferences = {
+						...((existing[0]?.preferences as Record<string, unknown>) ?? {}),
+						...input,
+						updatedAt: new Date().toISOString(),
+					};
 
-				if (existing[0]) {
-					await db
-						.update(travelProfile)
-						.set({ preferences: preferences as any, updatedAt: new Date() })
-						.where(eq(travelProfile.id, existing[0].id));
-					return { ...existing[0], preferences };
-				} else {
+					if (existing[0]) {
+						await db
+							.update(travelProfile)
+							.set({ preferences: preferences as any, updatedAt: new Date() })
+							.where(eq(travelProfile.id, existing[0].id));
+						return { ...existing[0], preferences };
+					}
+
 					const result = await db
 						.insert(travelProfile)
 						.values({ preferences: preferences as any })
 						.returning();
 					return result[0];
-				}
+				});
 			}),
 	}),
 
@@ -97,16 +102,66 @@ export const trpcRouter = createTRPCRouter({
 			return db
 				.select()
 				.from(conflicts)
+				.where(eq(conflicts.resolved, false))
 				.orderBy(desc(conflicts.createdAt))
 				.limit(50);
 		}),
 		resolve: publicProcedure
-			.input(z.object({ id: z.number(), resolution: z.string() }))
+			.input(
+				z.object({
+					id: z.number(),
+					action: z.enum(["keep_existing", "accept_new", "merge_both"]),
+				}),
+			)
 			.mutation(async ({ input }) => {
+				const conflictRecord = await db
+					.select()
+					.from(conflicts)
+					.where(eq(conflicts.id, input.id))
+					.limit(1);
+
+				if (!conflictRecord[0]) {
+					throw new Error("Conflict not found");
+				}
+
+				if (input.action === "accept_new" || input.action === "merge_both") {
+					// We need to update the profile with the new value
+					const existingProfile = await db.select().from(travelProfile).limit(1);
+					if (existingProfile[0]) {
+						const currentPreferences = (existingProfile[0]
+							.preferences as Record<string, unknown>) ?? {};
+						
+						let finalValue = conflictRecord[0].newValue;
+						
+						if (input.action === "merge_both") {
+							const prev = conflictRecord[0].previousValue;
+							const curr = conflictRecord[0].newValue;
+							if (Array.isArray(prev) && Array.isArray(curr)) {
+								finalValue = Array.from(new Set([...prev, ...curr]));
+							}
+						}
+
+						const updatedPreferences = {
+							...currentPreferences,
+							[conflictRecord[0].field]: finalValue,
+							updatedAt: new Date().toISOString(),
+						};
+
+						await db
+							.update(travelProfile)
+							.set({
+								preferences: updatedPreferences as any,
+								updatedAt: new Date(),
+							})
+							.where(eq(travelProfile.id, existingProfile[0].id));
+					}
+				}
+
 				await db
 					.update(conflicts)
 					.set({ resolved: true })
 					.where(eq(conflicts.id, input.id));
+
 				return { success: true };
 			}),
 	}),

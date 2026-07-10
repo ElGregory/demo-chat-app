@@ -1,7 +1,9 @@
 <!-- intent-skills:start -->
+
 ## Skill Loading
 
 Before editing files for a substantial task:
+
 - Run `pnpm dlx @tanstack/intent@latest list` from the workspace root to see available local skills.
 - If a listed skill matches the task, run `pnpm dlx @tanstack/intent@latest load <package>#<skill>` before changing files.
 - Use the loaded `SKILL.md` guidance while making the change.
@@ -41,7 +43,7 @@ TanStack Store
 
 AI SDK
 
-Convex
+Drizzle ORM + PostgreSQL
 
 shadcn
 
@@ -73,7 +75,7 @@ Conflict detection should be deterministic.
 
 Destination tool should be ordinary TypeScript.
 
-Persist everything in Convex.
+Persist everything in PostgreSQL.
 
 ## Files to Create
 
