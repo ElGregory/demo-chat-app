@@ -41,6 +41,12 @@ The goal of this application is to construct a **durable, persistent travel prof
 - **Framework**: TanStack Start handles layout and full-stack routing, and tRPC v11 handles typed contracts between the React client and the backend.
 - **Why PostgreSQL**: Everything related to our core application state (conversation history, user travel profile, and logged conflicts) is durably stored in local PostgreSQL.
 
+### D. AI Tooling & Orchestration (TanStack AI SDK)
+
+We use the `@tanstack/ai` suite for type-safe tooling, multi-turn agent loops, and efficient stream orchestration. Because our tooling relies on a **"Smart Tools, Dumb Model"** paradigm, all complexity (such as conflict detection, structured validation, and service integration) is handled deterministically on our server. This allows us to use the cheapest, fastest models available (like Gemini 3.1 Flash Lite) while keeping operations ultra-reliable and cost-efficient.
+
+Detailed learnings, codebase mapping, tool definitions, and integration guidelines have been moved to their own dedicated document: **[`AI-DEVELOPER-GUIDE.md`](./AI-DEVELOPER-GUIDE.md)**.
+
 ---
 
 ## 3. Data Contracts
