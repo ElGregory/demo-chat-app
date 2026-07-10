@@ -94,13 +94,13 @@ One of my concerns was that I didn't treat the destination tool the way the dire
 
 Treating the getDestinationInfo as an external function the internat tool should call was the right approach.
 
-What you'd do differently next time.
+## What you'd do differently next time.
 
-I should have looked at the details sooner so the 2 hours of coding could start sooner. Most of the time was in planning the approach, once the foundation was built it seemed to go fast.
+I should have looked at the details sooner so the 2 hours of coding could start sooner ;-). This wasn't something you set aside two hours for. Most of my time was in understanding the ask and planning the approach, once the foundation was built it seemed to go fast.
 
-I agonized of the DB but chose the one I would want to scale with if it was my time and money on the line.
+I agonized over the DB but finally chose the one I would want to scale with if it was my time and money on the line.
 
-If this had to run at scale. What would you change about model choice, prompting, schema, or eval strategy if this were serving 10k requests an hour? Don't implement it, just sketch your thinking.
+## If this had to run at scale. What would you change about model choice, prompting, schema, or eval strategy if this were serving 10k requests an hour? Don't implement it, just sketch your thinking.
 
 To handle 10k requests an hour, I would consider the following:
 
@@ -109,3 +109,5 @@ To handle 10k requests an hour, I would consider the following:
 3. **Prompting**: Refine the system prompts to be shorter and more structured, relying heavily on function calling with strict JSON schemas to reduce token usage and improve reliability.
 4. **Data Schema & Caching**: Introduce a caching layer (like Redis) for the user profile and frequent destination queries to avoid hitting PostgreSQL on every request. Vector search could also be used for destination recommendations instead of static queries.
 5. **Eval Strategy**: Implement an evaluation pipeline using LLM-as-a-judge (or a framework like LangSmith/Braintrust) to continuously test the accuracy of profile extraction and conflict detection against a golden dataset of user conversations.
+
+In the real world I would have asked some questions before making the decisions I did but you have to start somewhere.
