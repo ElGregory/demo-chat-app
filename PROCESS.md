@@ -98,7 +98,9 @@ Treating the getDestinationInfo as an external function the internat tool should
 
 I should have looked at the details sooner so the 2 hours of coding could start sooner ;-). This wasn't something you set aside two hours for. Most of my time was in understanding the ask and planning the approach, once the foundation was built it seemed to go fast.
 
-I agonized over the DB but finally chose the one I would want to scale with if it was my time and money on the line.
+I agonized over the DB but finally chose the one I would want to scale with if it was my time and money on the line. It may have made more sense to use local storage for the chat history. Having the fullstack plumbing working out of the gate is great assuming we need that stack, if it isn't the direction intended it was a waste of effort.
+
+I also would have used feature branches for you to see the check-ins more clearly. The Trunk Strategy buries changes in the commit history where as using feature branches gives everyone a clear view of what changed with each merge.
 
 ## If this had to run at scale. What would you change about model choice, prompting, schema, or eval strategy if this were serving 10k requests an hour? Don't implement it, just sketch your thinking.
 
