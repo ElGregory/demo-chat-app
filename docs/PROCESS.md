@@ -1,7 +1,15 @@
 ## Your overall approach. Did you plan first, or dive in? Did you let the agent drive, or stay in tight control? Why?
 
-Planned fundamental infrastucture, what could get me the most the fastest.
-Step 1 was looking at the requirements from a perspective of Tech Stack and googling the latest on Tanstack Start templates because it offers Server Side Rendering options and is a growing alternative to NextJs. Next is great but it's pretty propietary when it comes to hosting. I've only seen it run on Vercel and I don't want to pay for hosting like that.
+First, I planned fundamental infrastucture, starting with the questions:
+
+- What gets me the closest to feature complete in the least amount of time
+- What can I achieve with open source solutions
+- What is the truly unique feature in the functionality
+
+Step one was getting a working application to spend 2 hours a feature work. i approached it like this.
+
+Step 1.0 was looking at the requirements from a perspective of Tech Stack and googling the latest on Tanstack Start templates because it offers Server Side Rendering options and is a growing alternative to NextJs. Next is great but it's pretty propietary when it comes to hosting. I've only seen it run on Vercel and I don't want to pay for hosting like that.
+
 Step 1.25 . Was pasting the edited project features into Tanstack Builder to get this from the generated Prompt:
 
 > Start by scaffolding the project with the TanStack CLI.
@@ -14,29 +22,31 @@ Step 1.25 . Was pasting the edited project features into Tanstack Builder to get
 > Use the installed TanStack Intent skills and package-shipped guidance before making architectural or library-specific changes. Do not guess when a shipped skill can tell you the current pattern.
 > Keep durable project context in AGENTS.md (or equivalent), including the exact TanStack CLI command used, any follow-up TanStack Intent commands, the chosen stack and integrations, environment variable requirements, deployment notes, key architectural decisions, known gotchas, and next steps.
 
-Instead of running this returned prompt I used it as directions for creating a foundation that was tested, tried and true without wasting any AI credits or generating slop.
+Instead of running this returned prompt I used it as directions for creating a foundation that was tested, tried and true without wasting any AI credits or generating slop. Ultimately I scrapped the suggested Convex for the Postgres but that came later.
 
-Step 1.5 - G0t default hello chat world running with Docker and Drizzle
+Step 1.5 - Go default hello chat world running with Docker and Drizzle
 
 Step 1.75 Use Kiro prompt:
 
 > Investigate this app. It's built on open source projects but I need help completing the database and ai integrations. I want a functioning basic boilerplate of best practices before I add any features. Currently the application fails on the drizzle route with the following error: Cannot read properties of undefined (reading 'findMany')
 
-Step 1.9 -After getting it working I then removed the unused sample code and updated the readme and agents files to generate the Steering and Spec files to guide future development. Also updated the install instructions. (The Kiro Chat Session is can be found at kiro-session-sess_5dbf94f5-c646-41d4-9644-0847e02191ad.zip)
+Step 1.8 -After getting it working I then removed the unused sample code and updated the readme and agents files to generate the Steering and Spec files to guide future development. Also updated the install instructions. (The Kiro Chat Session is can be found at kiro-session-sess_5dbf94f5-c646-41d4-9644-0847e02191ad.zip)
 
-Step 2 - Switch to copilot to build out the new features using the BYOK feature (Out of Kiro credits),
+Step 1.9 Updated all the AGENTS and the readme for hand off to other tools
+
+Step 2 - Switched to copilot to build out the new features using the BYOK feature (Out of Kiro credits),
 
 > Review all the .md files in the codebase and suggest next steps based on where we are in our development. Update the readme if needed. Look at what the stated purpose/goal of the project and determine what is left to meet the requirements.
 
-Step 3 - Review what was built and update the documentation
+Step 3 - Reviewed what was built and update the documentation
 
-Step 4 - Update process doc and gather chats
+Step 4 - Updated process doc and gather chats
 
 ## What you reviewed by hand vs. trusted. Where did you read every line? Where did you skim? Where (honestly) did you ship something you didn't fully verify?
 
-I didn't spend a lot of time thinking about the profile or destination details. I thought the important part was to get something basic working and let feedback fill in the missing details.
+I didn't spend a lot of time thinking about the profile or destination details knowing they would be discussed later. I thought the important part was to get something basic working as a point of discussion and adjust based on feedback.
 
-Most of my time was spent reading the docs of each of the technologies in the stack. I wanted to be comfortable if not eager to support the technologies chosen. I also wanted to choose tech that wouldn't cost anyone at scale so I used the webkitSpeechRecognition api instead of option for a voice api. Next I would implement a free/cheap TTS api to make the chat bot respond to the users' input because the savings is dramatic. A lot of things were rushed due to time constraints and it was all done with the knowledge that it was meant to be viewed as a work in progress.
+Most of my time was spent reading the docs of each of the technologies in the stack. I wanted to be comfortable, if not eager, to support the technologies chosen. I also wanted to choose tech that wouldn't cost anyone at scale so I used the webkitSpeechRecognition api instead of option for a voice api. If I were to continue building I would next implement a free/cheap TTS api to make the chat bot respond audibly to the users' input because the savings is dramatic. A lot of things were rushed due to time constraints but it was all done with the knowledge that it was meant to be viewed as a work in progress.
 
 One of my concerns was that I didn't treat the destination tool the way the directions suggested. Here is the prompt a sent as I was checking for completenes:
 
@@ -96,15 +106,17 @@ Treating the getDestinationInfo as an external function the internat tool should
 
 ## What you'd do differently next time.
 
-I should have looked at the details sooner so the 2 hours of coding could start sooner ;-). This wasn't something you set aside two hours for. Most of my time was in understanding the ask and planning the approach, once the foundation was built it seemed to go fast.
+I should have looked at the details sooner so the 2 hours of coding could start sooner ;-). This wasn't something you set aside two hours for. Most of my time was spent understanding the ask and planning the approach, once the foundation was built it seemed to go fast.
 
-I agonized over the DB but finally chose the one I would want to scale with if it was my time and money on the line. It may have made more sense to use local storage for the chat history. Having the fullstack plumbing working out of the gate is great assuming we need that stack, if it isn't the direction intended it was a waste of effort.
+My first approach was to use the db suggested in the Tanstack docs, Convex, as a database/backend. I started using it and really loved the simplicity and tooling but after researching what it would take to deploy I thought again. For this project I chose the one I would want to scale with if it was my time and money on the line. It may have made more sense to use local storage for the chat history. Having the fullstack plumbing working from the beginning is great assuming we need that stack, if it isn't the direction intended it was a waste of effort.
 
 I also would have used feature branches for you to see the check-ins more clearly. The Trunk Strategy buries changes in the commit history where as using feature branches gives everyone a clear view of what changed with each merge.
 
+I used reorganizing the documentation as an excuse to demontrate using feature branches.
+
 ## If this had to run at scale. What would you change about model choice, prompting, schema, or eval strategy if this were serving 10k requests an hour? Don't implement it, just sketch your thinking.
 
-To handle 10k requests an hour, I would consider the following:
+To handle 10k requests an hour, I would consider the following suggestions from the agent:
 
 1. **Model Choice**: Move from larger general-purpose models to a more specialized or smaller, faster model (like Gemini Flash or Claude Haiku) for the chat interface to reduce latency and cost.
 2. **Architecture**: Decouple the profile extraction from the chat loop entirely. The chat could stream responses immediately, while a background job processes the conversation history asynchronously to extract profile updates and detect conflicts.
