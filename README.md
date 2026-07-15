@@ -59,13 +59,26 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
+# Project Documentation
+
+The following documents describe the project's architecture, implementation decisions, and development process.
+
 ## Design Decisions
 
-The following documentation outlines the architectural choices, technical logic, and system assumptions:
+- **[Architecture & Assumptions](./docs/ASSUMPTIONS.md)** — Detailed overview of the decoupled `DestinationService`, PostgreSQL persistence, and deterministic conflict detection.
+- **[AI Developer Guide](./docs/DEVELOPER-GUIDE.md)** — Comprehensive guide on the "Smart Tools, Dumb Model" paradigm, TanStack AI integration, and tool definitions.
+- **[Process & Scaling](./docs/PROCESS.md)** — Analysis of the development lifecycle and strategies for system scaling.
 
-- **[Architecture & Assumptions](./ASSUMPTIONS.md)** — Detailed overview of the decoupled `DestinationService`, PostgreSQL persistence, and deterministic conflict detection.
-- **[AI Developer Guide](./DEVELOPER-GUIDE.md)** — Comprehensive guide on the "Smart Tools, Dumb Model" paradigm, TanStack AI integration, and tool definitions.
-- **[Process & Scaling](./PROCESS.md)** — Analysis of the development lifecycle and strategies for system scaling.
+## Agent information and Product knowlege
+
+These documents are intended for both developers and AI coding assistants.
+
+- **[Agents](./AGENTS.md)** — Guidance to all coding agents about the project and its conventions. The file you create after the README.md
+- **[Product](./.kiro/steering/product.md)** — Comprehensive product description, more detailed than the README.md.
+- **[Project Structure](./.kiro/steering/structure.md)** — Analysis of the development lifecycle and strategies for system scaling.-
+- **[Tech Stack](./.kiro/steering/tech.md)** — Detailed description of the tech stack, coding conventions, style guidance and more. Writeen to avoid architectual drift and inconsistent styles.
+- **[Tanstack and Drizzle Skill](./.kiro/steering/Tanstack_Drizzle_Docker_Best_Practices.md)** — A skill is basically a developers guide for all the layers of the [Tech Stack](./.kiro/steering/tech.md) in one file. This skill is about Docker, PostgreSQL and Drizzle.
+- **[Docker and Postgres Best Practices](./docs/DOCKER-POSTGRES-BEST-PRACTICES.md)** — This is specific information on Docker and PostgreSQL.
 
 ---
 
