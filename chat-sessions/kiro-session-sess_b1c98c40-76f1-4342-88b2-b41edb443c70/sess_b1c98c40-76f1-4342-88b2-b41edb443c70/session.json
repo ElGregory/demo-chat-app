@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataModelVersion": 1,
+  "id": "sess_b1c98c40-76f1-4342-88b2-b41edb443c70",
+  "title": "Verify the fix worked. I'm getting this error when I load the app so far. \n\n ...",
+  "agentMode": "vibe",
+  "workspacePaths": [
+    "/home/lloyd/workspaces/portfolio/demo-chat-app"
+  ],
+  "createdAt": "2026-07-10T03:22:43.403Z",
+  "lastModifiedAt": "2026-07-10T03:26:39.322Z",
+  "modelId": "minimax-m2.1",
+  "autopilot": true,
+  "semanticReviewEnabled": true,
+  "ftaEnabled": false,
+  "specPlanEnabled": false,
+  "specWorkflow": "quick",
+  "specSkipClarificationEnabled": true,
+  "status": "idle"
+}

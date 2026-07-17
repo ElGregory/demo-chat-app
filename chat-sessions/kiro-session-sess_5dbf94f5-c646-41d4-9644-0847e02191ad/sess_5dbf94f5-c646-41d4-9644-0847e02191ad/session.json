@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataModelVersion": 1,
+  "id": "sess_5dbf94f5-c646-41d4-9644-0847e02191ad",
+  "title": "Analyze the current application, investigate why the profile isn't working an...",
+  "agentMode": "plan",
+  "workspacePaths": [
+    "/home/lloyd/workspaces/portfolio/demo-chat-app"
+  ],
+  "createdAt": "2026-07-10T01:49:43.082Z",
+  "lastModifiedAt": "2026-07-10T03:40:11.762Z",
+  "modelId": "minimax-m2.1",
+  "autopilot": true,
+  "semanticReviewEnabled": true,
+  "ftaEnabled": false,
+  "specPlanEnabled": false,
+  "specWorkflow": "quick",
+  "specSkipClarificationEnabled": true,
+  "status": "idle"
+}

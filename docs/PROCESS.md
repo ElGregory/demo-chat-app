@@ -24,13 +24,17 @@ Step 1.25 . Was pasting the edited project features into Tanstack Builder to get
 
 Instead of running this returned prompt I used it as directions for creating a foundation that was tested, tried and true without wasting any AI credits or generating slop. Ultimately I scrapped the suggested Convex for the Postgres but that came later.
 
-Step 1.5 - Go default hello chat world running with Docker and Drizzle
+Step 1.5 - Got default hello chat world running with Docker and Drizzle
 
-Step 1.75 Use Kiro prompt:
+Step 1.75 Uses this Antigravity prompt:
 
 > Investigate this app. It's built on open source projects but I need help completing the database and ai integrations. I want a functioning basic boilerplate of best practices before I add any features. Currently the application fails on the drizzle route with the following error: Cannot read properties of undefined (reading 'findMany')
 
-Step 1.8 -After getting it working I then removed the unused sample code and updated the readme and agents files to generate the Steering and Spec files to guide future development. Also updated the install instructions. (The Kiro Chat Session is can be found at kiro-session-sess_5dbf94f5-c646-41d4-9644-0847e02191ad.zip)
+Step 1.8 - After getting it working (and running out of AG credits) I then removed the unused sample code and updated the readme and agents files to generate the Steering and Spec files to guide future development using the Kiro prompt "Generate Steering Rules"
+Also updated the install instructions. (The Kiro Chat Session is can be found at kiro-session-sess_5dbf94f5-c646-41d4-9644-0847e02191ad.zip)
+
+In Kiro I picked up where I left off in Antigravity with this prompt:
+"Analyze the current application, investigate why the profile isn't working and determine next steps based on our application specs. I want to do another check-in soon with this next feature completed."
 
 Step 1.9 Updated all the AGENTS and the readme for hand off to other tools
 

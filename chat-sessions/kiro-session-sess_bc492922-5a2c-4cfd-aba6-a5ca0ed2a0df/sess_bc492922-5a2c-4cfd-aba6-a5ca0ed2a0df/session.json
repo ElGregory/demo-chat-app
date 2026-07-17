@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataModelVersion": 1,
+  "id": "sess_bc492922-5a2c-4cfd-aba6-a5ca0ed2a0df",
+  "title": "Profile Builder: Chat + CRUD",
+  "agentMode": "vibe",
+  "workspacePaths": [
+    "/home/lloyd/workspaces/portfolio/demo-chat-app"
+  ],
+  "createdAt": "2026-07-10T00:37:07.224Z",
+  "lastModifiedAt": "2026-07-10T02:51:09.614Z",
+  "modelId": "minimax-m2.1",
+  "autopilot": true,
+  "semanticReviewEnabled": true,
+  "ftaEnabled": false,
+  "specPlanEnabled": false,
+  "specWorkflow": "quick",
+  "specSkipClarificationEnabled": true,
+  "description": "Fixing chat, then building profile CRUD with extraction, persistence, and conflict detection",
+  "status": "failed"
+}
