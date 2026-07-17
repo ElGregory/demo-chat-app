@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataModelVersion": 1,
+  "id": "sess_68a8df06-7917-42ff-9557-01a854c2488a",
+  "title": "Generate Steering Rules",
+  "agentMode": "vibe",
+  "workspacePaths": [
+    "/home/lloyd/workspaces/portfolio/demo-chat-app"
+  ],
+  "createdAt": "2026-07-09T23:41:33.372Z",
+  "lastModifiedAt": "2026-07-09T23:43:33.712Z",
+  "semanticReviewEnabled": true,
+  "ftaEnabled": false,
+  "specPlanEnabled": false,
+  "specWorkflow": "quick",
+  "specSkipClarificationEnabled": true,
+  "status": "idle"
+}
